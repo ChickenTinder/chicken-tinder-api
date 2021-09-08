@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "start": "nodemon src/index.ts",
+    "start:prod": "node dist/src/index.js",
     "build": "tsc",
     "test": "jest",
     "test:watch": "jest --watch",
+    "postinstall": "husky install",
     "validate": "npm run formatcheck && npm run lintcheck && npm run typecheck",
     "lint": "eslint \"**/*.ts\" --fix",
     "lintcheck": "eslint \"**/*.ts\" --quiet",
