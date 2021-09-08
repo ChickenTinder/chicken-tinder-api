@@ -3,7 +3,14 @@
 
 name: CI
 
-on: [push, pull_request]
+on:
+  # Only run on pushes to the main branch
+  push:
+    branches:
+      - main
+
+  # Run on any pull request
+  pull_request:
 
 jobs:
   build:
