@@ -2,29 +2,39 @@
 
 This repo contains the backend REST API that powers the ChickenTinder mobile app.
 
-## Running the Server
-
-To start a development server, with automatic code reloading, run the following command.
+## Install Dependencies
 
 ```bash
-npm start
+npm install
 ```
 
-To start the server for production, make sure to build the code before running it. You can use the following commands.
+## Running the Server
 
 ```bash
+# Development environment
+npm start
+
+# Watch mode
+npm run start:dev
+
+# Production mode
 npm run build && npm run start:prod
 ```
 
-## Testing
+## Test
 
-You can run all tests with the following command.
+Tests are defined by the .spec.ts extension. You can run them with the following commands.
 
 ```bash
+# Unit tests
 npm test
-```
 
-Tests are defined by the `.spec.ts` extension.
+# e2e tests
+npm run test:e2e
+
+# Test coverage
+npm run test:cov
+```
 
 ## Validation Checks
 
