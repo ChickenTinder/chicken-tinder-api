@@ -1,9 +1,10 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { INestApplication } from "@nestjs/common";
 import request from "supertest";
-import { AppModule } from "./../src/app.module";
+import { AppModule } from "../../src/app.module";
+import { StatusResponseDto } from "src/status/status-response.dto";
 
-describe("AppController (e2e)", () => {
+describe("StatusController (e2e)", () => {
   let app: INestApplication;
 
   beforeEach(async () => {
@@ -15,7 +16,10 @@ describe("AppController (e2e)", () => {
     await app.init();
   });
 
-  it("/ (GET)", () => {
-    return request(app.getHttpServer()).get("/").expect(200).expect("Hello World!");
+  it("/status (GET)", () => {
+    const expected: StatusResponseDto = {
+      success: true,
+    };
+    return request(app.getHttpServer()).get("/status").expect(200).expect(expected);
   });
 });
