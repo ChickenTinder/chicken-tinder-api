@@ -1,4 +1,6 @@
-import { Args, Int, Query, Resolver } from "@nestjs/graphql";
+import { NotFoundException } from "@nestjs/common";
+import { Args, Int, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { CreateRestaurantDto } from "./dto/create-restaurant.dto";
 import { Restaurant } from "./restaurant.model";
 import { RestaurantService } from "./restaurant.service";
 
@@ -8,11 +10,20 @@ export class RestaurantResolver {
 
   @Query((returns) => Restaurant)
   async restaurant(@Args("id", { type: () => Int }) id: number): Promise<Restaurant | undefined> {
-    return this.restaurantService.findById(id);
+    const restaurant = await this.restaurantService.findById(id);
+    if (!restaurant) {
+      throw new NotFoundException();
+    }
+    return restaurant;
   }
 
   @Query((returns) => [Restaurant])
-  async restaurants(): Promise<Restaurant[]> {
+  restaurants(): Promise<Restaurant[]> {
     return this.restaurantService.findAll();
+  }
+
+  @Mutation((returns) => Restaurant)
+  createRestaurant(@Args("data") createRestaurantData: CreateRestaurantDto) {
+    return this.restaurantService.create(createRestaurantData);
   }
 }

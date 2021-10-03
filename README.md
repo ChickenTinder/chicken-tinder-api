@@ -45,3 +45,17 @@ npm run build
 npm run validate
 npm test
 ```
+
+## Database Migrations
+
+You can run the database migrations using the following command.
+
+```bash
+npx prisma migrate dev --name init
+```
+
+Then run the following command to update the Prisma client.
+
+```bash
+npx prisma generate
+```
