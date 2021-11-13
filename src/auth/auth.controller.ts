@@ -1,13 +1,16 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Request, Controller, Post, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { AuthCredentialsDto } from "./dto/auth-credentials.dto";
+import { AuthGuard } from "@nestjs/passport";
+import { Public } from "./decorator/public.decorator";
 
 @Controller("/auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Public()
+  @UseGuards(AuthGuard("local"))
   @Post("/login")
-  authenticate(@Body() authenticateRequest: AuthCredentialsDto): Promise<boolean> {
-    return this.authService.authenticateUser(authenticateRequest);
+  authenticate(@Request() req): Promise<any> {
+    return this.authService.login(req.user);
   }
 }

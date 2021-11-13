@@ -1,4 +1,6 @@
+import { User } from ".prisma/client";
 import { Args, ID, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { CurrentUser } from "src/auth/decorator/current-user.decorator";
 import { CreateUserInput } from "./create-user.input";
 import { UserModel } from "./user.model";
 import { UserService } from "./user.service";
@@ -6,6 +8,11 @@ import { UserService } from "./user.service";
 @Resolver(() => UserModel)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
+
+  @Query(() => UserModel)
+  async me(@CurrentUser() user: User) {
+    return this.user(user.id);
+  }
 
   @Query(() => [UserModel])
   async users(): Promise<UserModel[]> {
