@@ -9,23 +9,25 @@ export class RestaurantResolver {
   constructor(private readonly restaurantService: RestaurantService) {}
 
   @Query(() => RestaurantModel)
-  async restaurant(
-    @Args("id", { type: () => Int }) id: number
-  ): Promise<RestaurantModel | undefined> {
+  async restaurant(@Args("id", { type: () => Int }) id: number): Promise<RestaurantModel | null> {
     const restaurant = await this.restaurantService.findById(id);
     if (!restaurant) {
       throw new NotFoundException();
     }
-    return restaurant;
+    return RestaurantModel.build(restaurant);
   }
 
   @Query(() => [RestaurantModel])
-  restaurants(): Promise<RestaurantModel[]> {
-    return this.restaurantService.findAll();
+  async restaurants(): Promise<RestaurantModel[]> {
+    const restaurants = await this.restaurantService.findAll();
+    return restaurants?.map(RestaurantModel.build) ?? [];
   }
 
   @Mutation(() => RestaurantModel)
-  createRestaurant(@Args("data") createRestaurantData: CreateRestaurantInput) {
-    return this.restaurantService.create(createRestaurantData);
+  async createRestaurant(
+    @Args("data") createRestaurantData: CreateRestaurantInput
+  ): Promise<RestaurantModel> {
+    const restaurant = await this.restaurantService.create(createRestaurantData);
+    return RestaurantModel.build(restaurant);
   }
 }

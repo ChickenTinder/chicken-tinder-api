@@ -1,16 +1,23 @@
-import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
+import { Restaurant } from ".prisma/client";
+import { Field, Float, ID, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
 export class RestaurantModel {
-  @Field(() => Int)
+  @Field(() => ID)
   id: number;
-
-  @Field()
   name: string;
-
-  @Field()
   imageUrl: string;
 
   @Field(() => Float)
   rating: number;
+
+  static build(restaurant: Restaurant): RestaurantModel | null {
+    if (!restaurant) return null;
+    return {
+      id: restaurant.id,
+      name: restaurant.name,
+      imageUrl: restaurant.imageUrl,
+      rating: restaurant.rating,
+    };
+  }
 }

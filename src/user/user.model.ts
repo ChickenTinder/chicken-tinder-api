@@ -8,10 +8,8 @@ export class UserModel {
 
   username: string;
 
-  static buildFromUser(user?: User): UserModel | undefined {
-    if (!user) {
-      return user;
-    }
+  static build(user?: User): UserModel | null {
+    if (!user) return null;
     return {
       id: user.id,
       username: user.username,
